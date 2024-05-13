@@ -23,16 +23,15 @@ const links = [
               </button>
             </template>
             <v-list class="mt-2 px-2">
-              <v-list-item
+              <NuxtLink
                 v-for="{ to, title, icon } in links"
                 :key="to"
-                class="hover:bg-gray-100 rounded-md"
+                :to="to"
+                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-sm"
               >
-                <NuxtLink :to="to" class="flex items-center gap-2">
-                  <v-icon :icon="icon" size="small"></v-icon>
-                  <v-list-item-title>{{ title }}</v-list-item-title>
-                </NuxtLink>
-              </v-list-item>
+                <v-icon :icon="icon" size="small"></v-icon>
+                <v-list-item-title>{{ title }}</v-list-item-title>
+              </NuxtLink>
             </v-list>
           </v-menu>
         </v-col>

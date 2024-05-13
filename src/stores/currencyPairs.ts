@@ -35,5 +35,5 @@ export const useCurrencyStore = defineStore('currency', () => {
       selectedCurrency.value = value;
       addMessageToChangeLog(oldValue, value);
     }
-  }
+  };
 });
