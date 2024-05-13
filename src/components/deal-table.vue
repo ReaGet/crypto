@@ -1,9 +1,8 @@
 <script setup lang="ts">
-const data = Array(10).fill(0).map((item) => {
-  return [
-    (Math.random() * 100000).toFixed(2),
-    (Math.random() * 100000).toFixed(2),
-  ]
+withDefaults(defineProps<{
+  data: [number, number][] | []
+}>(), {
+  data: () => []
 });
 </script>
 
@@ -22,7 +21,7 @@ const data = Array(10).fill(0).map((item) => {
       >
         <div class="flex-1 shrink-0">{{ price }}</div>
         <div class="hidden sm:flex flex-1 shrink-0 text-right">{{ qty }}</div>
-        <div class="flex-1 shrink-0 text-right">{{ (price * qty).toFixed(2) }}</div>
+        <div class="flex-1 shrink-0 text-right">{{ (price * qty).toFixed(5) }}</div>
       </div>
     </div>
   </div>

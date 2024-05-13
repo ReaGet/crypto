@@ -1,39 +1,29 @@
-type Option = {
-  value: number
-  title: string
-}
-
-type LogItem = {
-  from: string
-  to: string
-  timestamp: string
-}
+type Ask = [number, number];
+type Bid = [number, number];
 
 export const useCurrencyStore = defineStore('currency', () => {
-  const currencyPairs: Option[] = [
-    { value: 1, title: 'BTCUSDT' },
-    { value: 2, title: 'BNBBTC' },
-    { value: 3, title: 'ETHBTC' }
-  ];
 
-  const selectedCurrency = ref(currencyPairs[0].value);
-  const currencyChangeLog = ref<LogItem[]>([]);
+  const asks = ref<Ask[]>();
+  const bids = ref<Bid[]>();
+  const lastUpdateId = ref<number>();
 
-  const addMessageToChangeLog = (from: number, to: number) => {
-    currencyChangeLog.value.unshift({
-      from: currencyPairs.find((c) => c.value === from)?.title || "",
-      to: currencyPairs.find((c) => c.value === to)?.title || "",
-      timestamp: Date(),
-    });
+  const loadDeals = async (symbol: string, limit: number = 100) => {
+    const { data: { value } } = await useFetch<{
+      asks: Ask[]
+      bids: Bid[]
+      lastUpdateId: number
+    }>(`https://api.binance.com/api/v3/depth?symbol=${symbol}&limit=${limit}`);
+
+    asks.value = value?.asks || [];
+    bids.value = value?.bids || [];
+    lastUpdateId.value = value?.lastUpdateId || 0;
+
+    console.log(value);
   }
 
   return {
-    currencyPairs,
-    selectedCurrency,
-    currencyChangeLog,
-    update: (value: number, oldValue: number) => {
-      selectedCurrency.value = value;
-      addMessageToChangeLog(oldValue, value);
-    }
+    asks,
+    bids,
+    loadDeals,
   };
 });

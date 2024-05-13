@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useCurrencyStore } from '@/stores/currencyPairs';
 
-const {
-  currencyPairs,
-  selectedCurrency,
-  update,
-  currencyChangeLog,
-} = useCurrencyStore();
+const { setSymbol, changeLog } = useSymbolStore();
+
+const symbols = [
+  "BTCUSDT",
+  "BNBBTC",
+  "ETHBTC",
+];
 
 const format = useDateFormatter({
   hour: "numeric",
@@ -15,8 +15,8 @@ const format = useDateFormatter({
   second: "numeric",
 });
 
-const currentCurrency = ref(selectedCurrency);
-let prevCurrency = currentCurrency.value;
+const currentSymbol = ref(symbols[0]);
+let prevSymbol = currentSymbol.value;
 </script>
 
 <template>
@@ -27,11 +27,11 @@ let prevCurrency = currentCurrency.value;
     <v-row>
       <v-select
         label="Валютная пара"
-        :items="currencyPairs"
-        v-model="currentCurrency"
+        :items="symbols"
+        v-model="currentSymbol"
         @update:modelValue="(value) => {
-          update(value, prevCurrency);
-          prevCurrency = value;
+          setSymbol(value, prevSymbol);
+          prevSymbol = value;
         }"
         variant="outlined"
         class="max-w-[320px]"
@@ -41,8 +41,8 @@ let prevCurrency = currentCurrency.value;
       <span class="font-semibold">Change Log</span>
       <div class="flex flex-col gap-4 p-4 mt-2 border rounded-sm max-h-[400px] overflow-y-auto">
         <div
-          v-if="currencyChangeLog.length > 0"
-          v-for="{ from, to, timestamp} in currencyChangeLog"
+          v-if="changeLog.length > 0"
+          v-for="{ from, to, timestamp } in changeLog"
           :key="timestamp"
           class="text-lg"
         >
