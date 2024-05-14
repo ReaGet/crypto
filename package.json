@@ -15,11 +15,14 @@
     "@pinia/nuxt": "^0.5.1",
     "nuxt": "^3.11.2",
     "pinia": "^2.1.7",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "@mdi/js": "^7.4.47",
+    "buffer": "^6.0.3",
     "vite-plugin-vuetify": "^2.0.3",
     "vuetify": "^3.6.5"
   }

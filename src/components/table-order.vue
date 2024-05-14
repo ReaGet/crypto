@@ -1,6 +1,6 @@
 <script setup lang="ts">
 withDefaults(defineProps<{
-  data: [number, number][] | []
+  data: [string, string, string][] | []
 }>(), {
   data: () => []
 });
@@ -15,13 +15,14 @@ withDefaults(defineProps<{
     </div>
     <div class="flex flex-col text-sm">
       <div
-        v-for="([price, qty], index) in data"
+        v-for="([price, qty, total], index) in data"
+        :key="total"
         class="flex px-2 sm:px-4 py-1"
         :class="{ 'bg-gray-50': index % 2 }"
       >
-        <div class="flex-1 shrink-0">{{ Number(price).toFixed(2) }}</div>
-        <div class="hidden sm:flex flex-1 shrink-0 text-right">{{ Number(qty).toFixed(5) }}</div>
-        <div class="flex-1 shrink-0 text-right">{{ Number(price * qty).toFixed(5) }}</div>
+        <div class="flex-1 shrink-0">{{ price }}</div>
+        <div class="hidden sm:flex flex-1 shrink-0 text-right">{{ qty }}</div>
+        <div class="flex-1 shrink-0 text-right">{{ total }}</div>
       </div>
     </div>
   </div>

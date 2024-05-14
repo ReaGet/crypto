@@ -1,13 +1,47 @@
 <script setup lang="ts">
-const { asks, bids } = useOrderStore();
-const currentLimit = ref(100);
+import { io } from "socket.io-client";
+
+const { socketPort } = useRuntimeConfig();
+
+const limits = [10, 50, 100];
+const currentLimit = ref(limits[0]);
+const book = useOrderBook();
+const { currentSymbol } = useSymbolStore();
+
+const mapToArray = (map: Map<string, string>): [string, string, string][] => {
+  return Array.from(map).map(([key, value]): [string, string, string] => {
+    const [price, qty] = [Number(key), Number(value)];
+    return [
+      price.toFixed(2),
+      qty.toFixed(5),
+      (price * qty).toFixed(5),
+    ]
+  });
+};
+
+await book.load(currentSymbol);
 
 const computedAsks = computed(() => {
-  return asks?.slice(0, currentLimit.value);
+  return mapToArray(book.asks).slice(0, currentLimit.value);
 });
 
 const computedBids = computed(() => {
-  return bids?.slice(0, currentLimit.value);
+  return mapToArray(book.bids).slice(0, currentLimit.value);
+});
+
+onMounted(() => {
+  console.log(12312345555555)
+  const socket = socketPort ? io("ws://localhost:" + socketPort) : io();
+  
+  console.log(socket)
+  
+  socket.on("connect", () => {
+    console.log(2113123)
+  });
+  
+  socket.emit("stream", {
+    symbol: "BNBUSDT",
+  });
 });
 
 </script>
@@ -19,7 +53,7 @@ const computedBids = computed(() => {
         v-model="currentLimit"
         class="max-w-[320px]"
         label="Кол-во элементов в таблице"
-        :items="[100, 500, 1000]"
+        :items="limits"
         variant="outlined"
       ></v-select>
     </v-row>

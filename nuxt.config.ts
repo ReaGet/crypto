@@ -31,4 +31,7 @@ export default defineNuxtConfig({
       },
     },
   },
-})
+  runtimeConfig: {
+    socketPort: 8888,
+  }
+});

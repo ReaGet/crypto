@@ -1,8 +1,8 @@
 type Item = [number, number];
 
 export const useOrderStore = defineStore("orders", () => {
-  const asks = ref<Item[]>();
-  const bids = ref<Item[]>();
+  const asks = reactive<Item[]>([]);
+  const bids = reactive<Item[]>([]);
   const lastUpdateId = ref<number>();
 
   const load = async (symbol: string, limit: number = 100) => {
@@ -12,8 +12,9 @@ export const useOrderStore = defineStore("orders", () => {
       lastUpdateId: number
     }>(`https://api.binance.com/api/v3/depth?symbol=${symbol}&limit=${limit}`);
 
-    asks.value = value?.asks || [];
-    bids.value = value?.bids || [];
+    asks.unshift(...(value?.asks || []));
+    bids.unshift(...(value?.bids || []));
+
     lastUpdateId.value = value?.lastUpdateId || 0;
   }
 
