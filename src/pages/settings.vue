@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const { setSymbol, changeLog } = useSymbolStore();
-
-const symbols = [
-  "BTCUSDT",
-  "BNBBTC",
-  "ETHBTC",
-];
+const { symbols, currentSymbol, setSymbol, changeLog } = useSymbolStore();
 
 const format = useDateFormatter({
   hour: "numeric",
@@ -15,8 +9,8 @@ const format = useDateFormatter({
   second: "numeric",
 });
 
-const currentSymbol = ref(symbols[0]);
-let prevSymbol = currentSymbol.value;
+const _symbol = ref(currentSymbol);
+let prevSymbol = _symbol.value;
 </script>
 
 <template>
@@ -28,7 +22,7 @@ let prevSymbol = currentSymbol.value;
       <v-select
         label="Валютная пара"
         :items="symbols"
-        v-model="currentSymbol"
+        v-model="_symbol"
         @update:modelValue="(value) => {
           setSymbol(value, prevSymbol);
           prevSymbol = value;

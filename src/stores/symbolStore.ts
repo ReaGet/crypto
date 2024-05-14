@@ -5,7 +5,13 @@ type LogItem = {
 }
 
 export const useSymbolStore = defineStore("symbol", () => {
-  const currentSymbol = ref<string>("BTCUSDT");
+  const symbols = [
+    "BTCUSDT",
+    "BNBBTC",
+    "ETHBTC",
+  ];
+  
+  const currentSymbol = ref<string>(symbols[0]);
   const changeLog = ref<LogItem[]>([]);
 
   const addMessageToChangeLog = (symbol: string = "", prevSymbol: string = "") => {
@@ -17,6 +23,7 @@ export const useSymbolStore = defineStore("symbol", () => {
   }
 
   return {
+    symbols,
     currentSymbol,
     changeLog,
     setSymbol: (symbol: string, prevSymbol: string) => {

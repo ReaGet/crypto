@@ -1,9 +1,6 @@
 <script setup lang="ts">
-const { loadDeals, asks, bids } = useCurrencyStore();
-const { currentSymbol } = useSymbolStore();
+const { asks, bids } = useOrderStore();
 const currentLimit = ref(100);
-
-await loadDeals(currentSymbol, currentLimit.value);
 
 const computedAsks = computed(() => {
   return asks?.slice(0, currentLimit.value);
@@ -26,9 +23,9 @@ const computedBids = computed(() => {
         variant="outlined"
       ></v-select>
     </v-row>
-    <v-row class="gap-1 sm:gap-4">
-      <DealTable :data="computedAsks"/>
-      <DealTable :data="computedBids" />
+    <v-row class="flex-nowrap gap-1 sm:gap-4">
+      <TableOrder :data="computedAsks"/>
+      <TableOrder :data="computedBids" />
     </v-row>
   </v-container>
 </template>
