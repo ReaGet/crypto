@@ -30,12 +30,11 @@ const computedBids = computed(() => {
 });
 
 onMounted(() => {
-  console.log(12312345555555)
-  const socket = socketPort ? io("ws://localhost:" + socketPort) : io();
+  const socket = socketPort ? io(":" + socketPort) : io();
   
   console.log(socket)
   
-  socket.on("connect", () => {
+  socket.on("connected", () => {
     console.log(2113123)
   });
   
